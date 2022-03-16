@@ -1,0 +1,14 @@
+.App {
+    text-align: center;
+}
+
+.App {
+    height: 100%;
+    opacity: 0;
+    transition: ease-out 1s;
+    background-color: transparent;
+}
+.loaded {
+    background-color: #eeeeee;
+    opacity: 1;
+}
