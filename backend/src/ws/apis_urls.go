@@ -8,5 +8,5 @@ import (
 )
 
 func InitWS(router *gin.RouterGroup) {
-	router.GET("chat/", ws_modules.GetWsHandlers("chat",views.TestWS,views.TestWSH))
+	router.GET(ws_modules.GetWsHandlers("chat/",views.TestWS,views.TestWSH))
 }

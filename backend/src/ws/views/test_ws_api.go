@@ -22,5 +22,4 @@ func TestWSH(s *melody.Session, msg []byte, w ws_modules.WsHandlers) {
 	default:
 		w.M.Broadcast(msg)
 	}
-
 }
