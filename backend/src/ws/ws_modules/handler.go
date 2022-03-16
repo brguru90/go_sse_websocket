@@ -5,6 +5,10 @@ import (
 	"gopkg.in/olahol/melody.v1"
 )
 
+// when every time creating new melody/websocker object,  requires a new unique variable
+// & its difficult to group it
+// so using bellow function we can easily map handler to the api in apis_urls
+
 type WsHandlers struct {
 	M *melody.Melody
 }
