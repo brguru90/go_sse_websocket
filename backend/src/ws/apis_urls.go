@@ -7,8 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-
-
 func InitWS(router *gin.RouterGroup) {
-	router.GET("chat/", ws_modules.GetWsHandlers("test_ws",views.TestWS,views.TestWSH))
+	router.GET("chat/", ws_modules.GetWsHandlers("chat",views.TestWS,views.TestWSH))
 }

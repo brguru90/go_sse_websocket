@@ -12,11 +12,11 @@ type WsHandlers struct {
 var AllHandler map[string]WsHandlers = make(map[string]WsHandlers)
 
 func GetWsHandlers(handler_id string, api_callback func(*gin.Context, WsHandlers), handler_callback func(*melody.Session, []byte, WsHandlers)) func(c *gin.Context) {
-	if AllHandler[handler_id].M != nil {
+	if AllHandler[handler_id].M == nil {
 		var WS WsHandlers
 		WS.M = melody.New()
-		WS.M.HandleMessage(func(s *melody.Session, b []byte) {
-			handler_callback(s, b, WS)
+		WS.M.HandleMessage(func(s *melody.Session, msg []byte) {
+			handler_callback(s, msg, WS)
 		})
 		AllHandler[handler_id] = WS
 	}

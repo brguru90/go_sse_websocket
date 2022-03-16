@@ -20,19 +20,13 @@ func main() {
 	all_router = gin.Default()
 	all_router.Use(static.Serve("/", static.LocalFile("./src/static", true)))
 	{
-		// just grouping, to make it more readable
 		api_router := all_router.Group("/api")
-
-		// more apis imported
 		apis.InitApis(api_router)
 	}
 
 	{
-		// just grouping, to make it more readable
-		api_router := all_router.Group("/ws")
-
-		// more apis imported
-		ws.InitWS(api_router)
+		ws_router := all_router.Group("/ws")
+		ws.InitWS(ws_router)
 	}
 
 	if os.Getenv("SERVER_PORT") != "" {
@@ -41,6 +35,5 @@ func main() {
 
 	bind_to_host := fmt.Sprintf(":%s", SERVER_PORT) //formatted host string
 	all_router.Run(bind_to_host)
-
 }
 
