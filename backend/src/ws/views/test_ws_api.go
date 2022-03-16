@@ -9,11 +9,13 @@ import (
 )
 
 func TestWS(c *gin.Context, w ws_modules.WsHandlers) {
-	fmt.Println("TestWS")
+	fmt.Println("on Connect")
 	w.M.HandleRequest(c.Writer, c.Request)
+	fmt.Println("on Disconnect")
 }
 
 func TestWSH(s *melody.Session, msg []byte, w ws_modules.WsHandlers) {
+	fmt.Println("on Receiving message")
 	switch string(msg) {
 	case "hi":
 		w.M.Broadcast([]byte("bi"))

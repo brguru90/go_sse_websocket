@@ -1,6 +1,7 @@
 import React, {Component} from "react"
 import "./App.scss"
 import * as $ from "jquery"
+import SSEDemo from "./SSEDemo.jsx"
 
 export default class App extends Component {
     state = {}
@@ -18,6 +19,13 @@ export default class App extends Component {
     connect = () => {
         const resp = document.querySelector("pre")
         resp.innerHTML = "guru"
+
+        try {
+            this.client.close()
+            this.client=null
+        } catch (error) {
+            
+        }
 
         const client = new WebSocket("ws://localhost:8000/ws/chat/")
 
@@ -61,7 +69,13 @@ export default class App extends Component {
 
     send = () => {
         const text = document.querySelector("textarea").value
-        this.client.send(text)
+
+        try {
+            this.client.send(text)
+        } catch (error) {
+            alert("client is not connected")
+        }
+        
     }
 
     render() {
@@ -79,6 +93,9 @@ export default class App extends Component {
                 <br />
                 <button onClick={this.send}>Send</button>
                 <pre />
+
+                <br /><br />
+                <SSEDemo />
             </div>
         )
     }

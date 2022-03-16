@@ -2,6 +2,7 @@ package apis
 
 import (
 	"learn_go/src/apis/views"
+	"learn_go/src/apis/api_module"
 	"github.com/gin-gonic/gin"
 )
 
@@ -10,6 +11,7 @@ func InitApis(router *gin.RouterGroup) {
 	router.Use(ApiSpecificMiddleware())
 	router.GET("test/:id", test_api)
 	router.GET("hello/", views.Hello_api)
+	router.GET("test_sse/", api_module.InitSSE(views.TestSSE))
 }
 
 
