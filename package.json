@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "env-cmd -f .env concurrently 'yarn --cwd ./frontend/ start' 'yarn --cwd ./backend/ start'",
+    "install": "env-cmd -f .env concurrently 'yarn --cwd ./frontend/ install' 'yarn --cwd ./backend/ install'",
     "start_backend": "env-cmd -f .env  yarn --cwd ./backend/ start",
     "start_frontend": "env-cmd -f .env  yarn --cwd ./frontend/ start"
   },
