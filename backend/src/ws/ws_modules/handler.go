@@ -9,24 +9,38 @@ import (
 // & its difficult to group it
 // so using bellow function we can easily map handler to the api in apis_urls
 
+
+
 type WsHandlers struct {
 	M *melody.Melody
+	OnConnect func(s *melody.Session)
+	OnMessage func(s *melody.Session, msg []byte)
+	OnDisconnect func(s *melody.Session)
 }
 
 var AllHandler map[string]WsHandlers = make(map[string]WsHandlers)
 
-func GetWsHandlers(url string, handler_callback func(*melody.Session, []byte, WsHandlers,int)) (string,func(c *gin.Context)) {
+func GetWsHandlers(url string, handler_callback func(*WsHandlers)) (string,func(c *gin.Context)) {
 	if AllHandler[url].M == nil {
 		var WS WsHandlers
 		WS.M = melody.New()
+
+		handler_callback(&WS)
+		
 		WS.M.HandleMessage(func(s *melody.Session, msg []byte) {
-			handler_callback(s, msg, WS,1)
+			if WS.OnMessage!=nil{
+				WS.OnMessage(s,msg)
+			}
 		})
 		WS.M.HandleConnect(func(s *melody.Session) {
-			handler_callback(s, nil, WS,0)		
+			if WS.OnConnect!=nil{
+				WS.OnConnect(s)
+			}		
 		})
 		WS.M.HandleDisconnect(func(s *melody.Session) {
-			handler_callback(s, nil, WS,2)		
+			if WS.OnDisconnect!=nil{
+				WS.OnDisconnect(s)
+			}			
 		})
 		AllHandler[url] = WS
 	}
