@@ -15,16 +15,22 @@ type WsHandlers struct {
 
 var AllHandler map[string]WsHandlers = make(map[string]WsHandlers)
 
-func GetWsHandlers(url string, api_callback func(*gin.Context, WsHandlers), handler_callback func(*melody.Session, []byte, WsHandlers)) (string,func(c *gin.Context)) {
+func GetWsHandlers(url string, handler_callback func(*melody.Session, []byte, WsHandlers,int)) (string,func(c *gin.Context)) {
 	if AllHandler[url].M == nil {
 		var WS WsHandlers
 		WS.M = melody.New()
 		WS.M.HandleMessage(func(s *melody.Session, msg []byte) {
-			handler_callback(s, msg, WS)
+			handler_callback(s, msg, WS,1)
+		})
+		WS.M.HandleConnect(func(s *melody.Session) {
+			handler_callback(s, nil, WS,0)		
+		})
+		WS.M.HandleDisconnect(func(s *melody.Session) {
+			handler_callback(s, nil, WS,2)		
 		})
 		AllHandler[url] = WS
 	}
 	return url,func(c *gin.Context) {
-		api_callback(c, AllHandler[url])
+		AllHandler[url].M.HandleRequest(c.Writer, c.Request)
 	}
 }
